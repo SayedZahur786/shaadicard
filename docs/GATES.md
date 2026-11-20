@@ -14,7 +14,7 @@ All shared launch-kit files remain unchanged. Local checks use the actual Next.j
 | Dependency audit | PASS, 0 vulnerabilities across installed dependencies, including development packages. |
 | Security regression suite | PASS, 2 tests: size/validation/CSRF/rate limits, spoofed header resistance, rotating CSP nonces and rendered OG image. |
 | Frozen install | PASS, npm ci --ignore-scripts from the committed lockfile; subsequent production build and checks pass. |
-| Secret scans | PASS, Gitleaks on 3-commit history and current source archive; 48 built client assets compared against database URLs/passwords with zero matches. |
+| Secret scans | PASS, Gitleaks on repository history and current source archive; 48 built client assets compared against database URLs/passwords with zero matches. |
 | Screenshots | PASS, 24 real desktop/mobile PNGs across 12 routes/states; wait for page headings and loaded fonts before capture. |
 | README animation | PASS, locally rendered committed SVG image changed between frames; no remote image hotlink. |
 | Runtime privileges | PASS, current_user shaadicard_runtime; can_change_schema false; can_mark_paid false. |

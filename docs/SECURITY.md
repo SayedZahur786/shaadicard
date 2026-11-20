@@ -21,3 +21,5 @@ N/A: no payment collection, merchant keys, upload route, remote-image fetch or w
 ## Remaining launch conditions
 
 Automatic review rejected sending DATABASE_URL to Vercel. Hosted account/RSVP persistence, deployed ownership/session tests and production rate-limit verification are not complete. Do not claim a fully passing hosted service security audit. Private source publication needs no additional action; public source release requires the owner's approval. Operator must review support requests and schedule retention maintenance, verify merchant identity and conduct a recovery drill before relying on this for paid customers.
+
+Request-header trust follows [Vercel’s request-header documentation](https://vercel.com/docs/headers/request-headers), checked 21 November 2026. Do not reuse this trust rule on a different host without adapting its proxy boundary.
