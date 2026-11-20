@@ -1,0 +1,3 @@
+'use client';
+import { useState } from 'react';
+export function Share({path,title,labels={share:'Share on WhatsApp',copy:'Copy invite link',copied:'Link copied'}}:{path:string;title:string;labels?:{share:string;copy:string;copied:string}}){const [status,setStatus]=useState('');const url=()=>new URL(path,window.location.origin).href;return <div><div className="actions"><button className="btn" onClick={()=>window.open('https://wa.me/?text='+encodeURIComponent(title+'\n'+url()),'_blank','noopener,noreferrer')}>{labels.share}</button><button className="btn secondary" onClick={async()=>{try{await navigator.clipboard.writeText(url());setStatus(labels.copied);}catch{setStatus(url());}}}>{labels.copy}</button></div><p role="status" className="small-note">{status}</p></div>;}
