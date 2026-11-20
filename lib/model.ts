@@ -4,7 +4,7 @@ export type Lang = typeof languages[number];
 export const localized = z.object({hi:z.string().trim().min(1).max(160),ur:z.string().trim().min(1).max(160),gu:z.string().trim().min(1).max(160)}).strict();
 export const kinds = ['mehndi','sangeet','wedding','reception'] as const;
 export type Kind = typeof kinds[number];
-export const ceremonySchema = z.object({kind:z.enum(kinds),date:z.string().regex(/^20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}$/).refine(v=>!Number.isNaN(Date.parse(v+'+05:30')),'Choose a valid date'),venue:localized}).strict();
+export const ceremonySchema = z.object({kind:z.enum(kinds),date:z.string().regex(/^20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}$/).refine(v=>!Number.isNaN(Date.parse(v+'Z')) && new Date(v+'Z').toISOString().slice(0,16)===v,'Choose a valid date'),venue:localized}).strict();
 export const inviteSchema = z.object({couple:localized,hosts:localized,brand:z.string().trim().max(70),ceremonies:z.array(ceremonySchema).min(1).max(4).refine(v=>new Set(v.map(x=>x.kind)).size===v.length,'Each ceremony appears once')}).strict();
 export type InviteData = z.infer<typeof inviteSchema>;
 export type Invite = {id:string;slug:string;owner_id:string;data:InviteData;created_at:string};

@@ -1,0 +1,9 @@
+import { chromium } from '@playwright/test';
+import { spawnSync } from 'node:child_process';
+const captions=[['One beautiful link for every celebration.',7],['Create in Hindi, Urdu and Gujarati.',8],['Your invitation. Your shop’s name.',8],['Urdu, with natural right-to-left reading.',6],['Every ceremony, in your family’s language.',7],['Reply per ceremony. Include the whole family.',11],['Private headcounts, updated as families reply.',9],['ShaadiCard · Early preview · Payments not enabled',6]];
+const browser=await chromium.launch();const page=await browser.newPage({viewport:{width:1280,height:110}});
+for(let i=0;i<captions.length;i++){await page.setContent(`<html><body style="margin:0;background:#26101fee;color:#fff4df;font:30px Arial,sans-serif;display:flex;align-items:center;justify-content:center;height:110px;text-align:center;padding:0 40px;box-sizing:border-box">${captions[i][0]}</body></html>`);await page.screenshot({path:`.local/video/caption-${i}.png`});}await browser.close();
+const args=['-y','-i','.local/video/walkthrough.webm','-i','.local/video/narration.aiff'];for(let i=0;i<captions.length;i++)args.push('-loop','1','-i',`.local/video/caption-${i}.png`);
+let clock=0;const filters=[];for(let i=0;i<captions.length;i++){const end=clock+captions[i][1];filters.push(`${i?'[v'+(i-1)+']':'[0:v]'}[${i+2}:v]overlay=0:790:enable='between(t,${clock},${end})'[v${i}]`);clock=end;}
+args.push('-filter_complex',filters.join(';'),'-map','[v7]','-map','1:a','-c:v','libx264','-preset','veryfast','-crf','24','-pix_fmt','yuv420p','-c:a','aac','-af','apad','-t','62','-movflags','+faststart','docs/demo.mp4');const result=spawnSync('ffmpeg',args,{stdio:'inherit'});if(result.status!==0)process.exit(result.status||1);
+spawnSync('ffmpeg',['-y','-ss','3','-i','docs/demo.mp4','-frames:v','1','docs/demo-poster.png'],{stdio:'inherit'});

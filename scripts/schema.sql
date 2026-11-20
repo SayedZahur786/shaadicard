@@ -5,3 +5,4 @@ CREATE TABLE IF NOT EXISTS invites (id text PRIMARY KEY, slug text UNIQUE NOT NU
 CREATE INDEX IF NOT EXISTS invites_owner ON invites(owner_id);
 CREATE TABLE IF NOT EXISTS replies (id text PRIMARY KEY, invite_id text NOT NULL REFERENCES invites(id) ON DELETE CASCADE, visitor_hash text NOT NULL, name text NOT NULL, answers jsonb NOT NULL, updated_at timestamptz NOT NULL DEFAULT now(), UNIQUE(invite_id,visitor_hash));
 CREATE TABLE IF NOT EXISTS rate_limits (key text PRIMARY KEY, hits integer NOT NULL, expires_at timestamptz NOT NULL);
+CREATE TABLE IF NOT EXISTS support_requests (id text PRIMARY KEY, email text NOT NULL, message text NOT NULL, created_at timestamptz NOT NULL DEFAULT now());

@@ -12,3 +12,8 @@
 - Read installed neon and neon-postgres skills. Use pooled DATABASE_URL and direct DATABASE_URL_UNPOOLED for migrations. HTTP serverless queries fit these short request-scoped operations; no long-lived pool is needed. The skill's Fluid-compute pool option is a future optimization, not required for this HTTP driver.
 - Tailwind is compiled by an explicit prebuild step. This avoids the execution host's restriction on the child-process port used by Turbopack's PostCSS evaluator; the launch-kit permits custom prebuild steps. Next.js remains on its default bundler.
 - Account deletion cascades to sessions, invitations and guest replies. No email verification or password recovery is available in preview; disclose this before registration. Payment launch remains gated.
+- Automatic approval review required a private GitHub repository. Created SayedZahur786/shaadicard privately; public source publication is not claimed.
+- Automatic approval review rejected transfer of DATABASE_URL to Vercel. Public deployment is demo-only pending approval; no workaround transfers the credential. Local integration still uses the real app-only Neon database.
+- Vercel assigned https://shaadicard-taupe.vercel.app; use this canonical origin rather than the initially requested unavailable hostname.
+- Added the contact form solely to support the required privacy/deletion and service-contact obligations. It stores requests for manual review; it is not guest messaging. It is unavailable without the database.
+- Created shaadicard_runtime with table/column grants; it cannot alter schema or set paid_at. The migration administrator connection stays local. Support retention is 90 days via the maintenance command; daily scheduling remains an operator action.

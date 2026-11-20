@@ -1,0 +1,14 @@
+import { chromium } from '@playwright/test';
+import { mkdir,copyFile } from 'node:fs/promises';
+const baseURL=process.env.TEST_BASE_URL||'http://127.0.0.1:3024';
+await mkdir('.local/video',{recursive:true});
+const browser=await chromium.launch();const context=await browser.newContext({baseURL,viewport:{width:1280,height:900},recordVideo:{dir:'.local/video',size:{width:1280,height:900}}});
+const stamp=Date.now();const auth=await context.request.post('/api/auth',{headers:{origin:baseURL},data:{mode:'register',email:`video-${stamp}@shaadicard.invalid`,password:`Wedding-Studio-${stamp}!`}});if(!auth.ok())throw new Error('Recording account unavailable');
+const page=await context.newPage();const start=Date.now();const until=async seconds=>{await page.waitForTimeout(Math.max(0,start+seconds*1000-Date.now()));};
+await page.goto('/');await until(7);
+await page.goto('/create');await page.getByRole('button',{name:'Fill with fictional demo family'}).click();await page.getByLabel('Your shop or family brand').fill('Gulab Invitation Studio');await until(15);
+await page.getByRole('button',{name:'Create & get my share link'}).click();await page.waitForURL(/dashboard\/.+/);const dashboard=page.url();const guest=await page.getByRole('link',{name:'Open guest invitation'}).getAttribute('href');await page.goto(guest);await until(23);
+await page.getByRole('link',{name:'اردو',exact:true}).click();await until(29);await page.getByRole('link',{name:'ગુજરાતી',exact:true}).click();await page.getByRole('heading',{name:'લગ્નના પ્રસંગો'}).scrollIntoViewIfNeeded();await until(36);
+await page.getByRole('link',{name:'हिन्दी',exact:true}).click();await page.getByLabel('परिवार का नाम').fill('Joshi family');for(const number of await page.locator('input[type=number]').all())await number.fill('3');await page.getByRole('button',{name:'जवाब भेजें'}).click();await page.getByRole('status').filter({hasText:'सुरक्षित'}).waitFor();await until(47);
+await page.goto(dashboard);await page.getByRole('heading',{name:'Family replies'}).scrollIntoViewIfNeeded();await until(56);await page.goto('/');await until(62);
+const video=page.video();await context.request.delete('/api/account',{headers:{origin:baseURL}});await context.close();await copyFile(await video.path(),'.local/video/walkthrough.webm');await browser.close();console.log('Recorded a 62-second real workflow.');

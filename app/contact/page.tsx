@@ -1,0 +1,4 @@
+import { configured } from '../../lib/db';
+import { ContactForm } from '../../components/contact-form';
+export const metadata={title:'Contact & privacy requests'};
+export default function Contact(){return <div className="page narrow"><h1>We’re listening.</h1><p>Send a service or privacy request to the ShaadiCard maintainer. Do not include passwords or guest lists. Requests are stored for manual review; this preview does not promise a response time.</p><p className="notice">To remove your data immediately, sign in and use “Delete my account & data” in My invites. Guests can ask their invitation host to remove a reply.</p><div className="panel">{configured()?<ContactForm/>:<p>The contact service is not active on this demo deployment. No personal information can be submitted here. Account and invitation creation are also unavailable until the live service is connected.</p>}</div></div>;}
